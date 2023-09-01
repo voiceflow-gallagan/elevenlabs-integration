@@ -3,11 +3,21 @@ const express = require('express')
 const axios = require('axios')
 const app = express()
 const port = process.env.PORT || 3000
-
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+app.use((error, req, res, next) => {
+  if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
+    console.error(error)
+    return res.status(400).send({ message: 'Malformed JSON in payload' })
+  }
+  next()
+})
+
 app.post('/synthesize', async (req, res) => {
-  const text = req.body.text
+  let text = req.body.text
+  // Remove double quotes from text
+  text = text.replace(/"/g, '')
 
   // Updated this based on Elias feedback
   // As this change will allow the user to pass 0 as a value, if no text is set in the text variable,
@@ -26,6 +36,8 @@ app.post('/synthesize', async (req, res) => {
       ? '21m00Tcm4TlvDq8ikWAM'
       : req.body.voice || '21m00Tcm4TlvDq8ikWAM'
 
+  const model = req.body.model || 'eleven_multilingual_v2'
+
   const voice_settings =
     req.body.voice_settings == 0
       ? {
@@ -41,8 +53,9 @@ app.post('/synthesize', async (req, res) => {
     const response = await axios.post(
       `https://api.elevenlabs.io/v1/text-to-speech/${voice}`,
       {
-        text: text,
+        text: text.replace(/"/g, '\\"'), // escape inner double quotes ,
         voice_settings: voice_settings,
+        model_id: model,
       },
       {
         headers: {
