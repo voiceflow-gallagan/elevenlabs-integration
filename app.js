@@ -15,9 +15,7 @@ app.use((error, req, res, next) => {
 })
 
 app.post('/synthesize', async (req, res) => {
-  let text = req.body.text
-  // Remove double quotes from text
-  text = text.replace(/"/g, '')
+  let text = req.body.text || null
 
   // Updated this based on Elias feedback
   // As this change will allow the user to pass 0 as a value, if no text is set in the text variable,
@@ -30,6 +28,9 @@ app.post('/synthesize', async (req, res) => {
     res.status(400).send({ error: 'Text is required.' })
     return
   }
+
+  // Remove double quotes from text
+  text = text.replace(/"/g, '')
 
   const voice =
     req.body.voice == 0
