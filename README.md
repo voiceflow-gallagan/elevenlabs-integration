@@ -55,6 +55,7 @@ The server will start listening on the specified port (default is 3000). You can
 **Request Body:**
 
 - text(required): The text to synthesize.
+- model (optional): The model you want to use. Default is 'eleven_multilingual_v2'
 - voice (optional): The voice to use for synthesis. Default is '21m00Tcm4TlvDq8ikWAM'.
 - voice_settings (optional): An object containing additional voice settings.
   - stability (default: 0)
