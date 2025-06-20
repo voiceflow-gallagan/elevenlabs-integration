@@ -86,3 +86,5 @@ curl -X POST -H "Content-Type: application/json" \
   "audioDataURI": "data:audio/mpeg;base64,//uQZAAAAAAAAAAAAAAAAAAAAA"
 }
 ```
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=voiceflow-community_elevenlabs-integration&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=voiceflow-community_elevenlabs-integration)
